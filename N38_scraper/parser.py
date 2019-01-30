@@ -26,10 +26,12 @@ def parse_page(url):
         time = soup.find('ul', class_='post__meta list-inline').find('li', class_='meta--date').text
         phrases = soup.find('div', class_='content').find_all('p')
         content = '\n'.join([p.text.strip() for p in phrases])
+        author = soup.find('a', class_= 'author url fn').text
 
         json_object = {
             'title' : title,
             'time' : time,
+            'author' :author,
             'content' : content,
             'url' : url,
             'scrap_time' : now()
