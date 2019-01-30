@@ -22,9 +22,9 @@ def parse_page(url):
 
     try:
         soup = get_soup(url)
-        title = soup.find('article', role= 'article').find('h1').text
-        time = soup.find('p').text
-        phrases = soup.find_all('p')
+        title = soup.find('h1', class_= 'page-header').text
+        time = soup.find('ul', class_='post__meta list-inline').find('li', class_='meta--date').text
+        phrases = soup.find('div', class_='content').find_all('p')
         content = '\n'.join([p.text.strip() for p in phrases])
 
         json_object = {
