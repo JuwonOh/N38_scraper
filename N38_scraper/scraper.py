@@ -39,7 +39,7 @@ def yield_latest_allnews(begin_date, max_num=10, sleep=1.0):
     n_news = 0
     outdate = False
 
-    for page in range(0, end_page+1):
+    for page in range(1, end_page+1):
 
         # check number of scraped news
         if n_news >= max_num or outdate:
@@ -68,6 +68,12 @@ def yield_latest_allnews(begin_date, max_num=10, sleep=1.0):
 
             # yield
             yield news_json
+
+            # check number of scraped news
+            n_news += 1
+            if n_news >= max_num:
+                break
+            time.sleep(sleep)
 
 def get_allnews_urls(begin_page=1, end_page=3, verbose=True):
     """
