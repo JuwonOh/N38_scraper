@@ -2,9 +2,7 @@ import re
 import time
 from .parser import parse_page
 from .utils import get_soup
-from .utils import news_dateformat
-from .utils import user_dateformat
-from .utils import strf_to_datetime
+from dateutil.parser import parse
 
 def is_matched(url):
     for pattern in patterns:
@@ -34,12 +32,12 @@ def yield_latest_allnews(begin_date, max_num=10, sleep=1.0):
     """
 
     # prepare parameters
-    d_begin = strf_to_datetime(begin_date, user_dateformat)
+    d_begin = parse(begin_date)
     end_page = 72
     n_news = 0
     outdate = False
 
-    for page in range(1, end_page+1):
+    for page in range(0, end_page+1):
 
         # check number of scraped news
         if n_news >= max_num or outdate:
@@ -59,7 +57,7 @@ def yield_latest_allnews(begin_date, max_num=10, sleep=1.0):
             news_json = parse_page(url)
 
             # check date
-            d_news = strf_to_datetime(news_json['time'], news_dateformat)
+            d_news = news_json['time']
             if d_begin > d_news:
                 outdate = True
                 print('Stop scrapping. {} / {} news was scrapped'.format(n_news, max_num))
